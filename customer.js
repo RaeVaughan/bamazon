@@ -18,10 +18,10 @@ var table = new Table({
 connection.connect(function(err){
 	if (err) throw err;
 	console.log("connected as id " + connection.threadId);
-	productTable();
+	placeOrder();
 });
 
-function productTable(){
+function placeOrder(){
 	connection.query("SELECT * FROM products", function (err, res) {
 		for (var i = 0; i < res.length; i++) {
 			table.push(
@@ -56,18 +56,36 @@ function productTable(){
 				}
 			}
 		]).then(function(answers){
-			console.log(answers);
+			 var chosenItemId = (answers.choice);
+			 var chosenItemIndex = (answers.choice - 1);
+			 var chosenItemQty = (res[chosenItemIndex].stock_quantity);
+			 var chosenItemPrice = (res[chosenItemIndex].price);
+			 var total = (chosenItemPrice * answers.amount);
+
+			 if (chosenItemQty >= answers.amount){
+			 	console.log("In stock!");
+			 	connection.query("UPDATE products SET ? WHERE ?",
+			 		[
+			 			{
+			 				stock_quantity: chosenItemQty - answers.amount
+			 			},
+			 			{
+			 				item_id: chosenItemId
+			 			}
+			 		],
+			 		function(err, res) {
+			 			console.log("Thank you for your purchase! Your total comes to: $" + total);
+			 		}
+			 		);
+			 } else {
+			 	console.log("So sorry! We only have " + chosenItemQty + " remaining of that item.");
+			 }
 		});
-
-
-
-
-
 	});
 }
 
 
-
+// questions: I would like to refactor my code so that I'm using a loop in the "choices" for my inquirer. I would also like to include some recursion so that the user gets pushed back to the questions once they make it through the if/else statement so that they won't have to hit ctrl c and rerun the app
 
 
 
