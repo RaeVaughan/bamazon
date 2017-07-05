@@ -1,6 +1,7 @@
 var mysql = require("mysql");
 var Table = require("cli-table");
 var inquirer = require("inquirer");
+var colors = require("colors");
 
 var connection = mysql.createConnection({
 	host: "localhost", 
@@ -85,7 +86,7 @@ function placeOrder(){
 }
 
 
-// questions: I would like to refactor my code so that I'm using a loop in the "choices" for my inquirer. I would also like to include some recursion so that the user gets pushed back to the questions once they make it through the if/else statement so that they won't have to hit ctrl c and rerun the app
+// questions: I would like to refactor my code so that I'm using a loop in the "choices" for my inquirer. I would also like to include some recursion so that the user gets pushed back to the questions once they make it through the if/else statement so that they won't have to hit ctrl c and rerun the app. Also need to figure out colors.
 
 
 
