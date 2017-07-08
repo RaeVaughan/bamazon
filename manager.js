@@ -9,7 +9,6 @@ var table = new Table({
 		colWidths: [5, 25, 25, 8, 5]
 	});
 table.options.style.head = ["green"];
-console.log(table.options.style.head);
 
 var connection = mysql.createConnection({
 	host: "localhost", 
@@ -89,15 +88,15 @@ function viewAll(){
 }
 
 function viewLow(){
-	connection.query("SELECT * FROM products WHERE stock_quantity > 48", function(err, res) {
+	connection.query("SELECT * FROM products WHERE stock_quantity < 5", function(err, res) {
 		if (res.length > 0) {
 			for (var i = 0; i < res.length; i++) {
 				table.push([res[i].item_id, res[i].product_name, res[i].department_name, res[i].price, res[i].stock_quantity]);
 			}
-			console.log(colors.green(table.toString()));
+			console.log(table.toString());
 			
 		} else {
-			console.log("Bye Felicia")
+			console.log("No low inventory items to show.")
 		}
 		continuePrompt();
 	});
@@ -150,6 +149,7 @@ function addInventory(){
 				],
 				function(err, res) {
 					console.log("Previous item inventory: " + chosenItemQty + " units" + "\nCurrent item inventory: " + total + " units");
+					continuePrompt();
 				}
 			);
 		});
