@@ -103,7 +103,6 @@ function viewLow(){
 }
 
 function addInventory(){
-	console.log("add to inventory");
 	connection.query("SELECT * FROM products", function(err, res) {
 		if (err) throw err;
 
@@ -157,17 +156,68 @@ function addInventory(){
 }
 
 function addNewProduct(){
-	console.log("add new product");
+	connection.query("SELECT * FROM products", function(err, res){
+		if (err) throw err;
+		inquirer.prompt([
+			{
+				type: "input",
+				name: "product",
+				message: "What product would you like to add?"
+			},
+			{
+				type: "input",
+				name: "department",
+				message: "What department is this product in?"
+			},
+			{
+				type: "input",
+				name: "price",
+				message: "What is the price of this product?",
+				validate: function(value) {
+					if (isNaN(value) === false && parseInt(value) > 0) {
+						return true;
+					}
+					return false;
+				}
+			},
+			{
+				type: "input",
+				name: "stock",
+				message: "What is the starting inventory of this product?",
+				validate: function(value) {
+					if (isNaN(value) === false && parseInt(value) > 0) {
+						return true;
+					}
+					return false;
+				}
+			}
+		]).then(function(answers) {
+			var newProduct = answers.product;
+			var newProductDpt = answers.department;
+			var newProductPrice = answers.price;
+			var stock = answers.stock;
+
+			connection.query("INSERT INTO products SET ?",
+				{
+					product_name: newProduct,
+					department_name: newProductDpt,
+					price: newProductPrice,
+					stock_quantity: stock
+				}, function(err, res) {
+					console.log(stock + " of the new product (" + newProduct + ") added to the " + newProductDpt + " department for $" + newProductPrice);
+					continuePrompt();
+				}
+			);
+		});
+	});
 }
 
 
 
 
 
-
-
-
-
+//add decimal options
+//add "would you like to add more" prompt to the low inventory function
 
 
 
