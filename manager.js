@@ -2,11 +2,14 @@ var mysql = require("mysql");
 var Table = require("cli-table");
 var inquirer = require("inquirer");
 var colors = require("colors");
+var colors = require('colors/safe');
 
 var table = new Table({
 		head: ["ID", "Product Name", "Department", "Price", "Qty"],
 		colWidths: [5, 25, 25, 8, 5]
 	});
+table.options.style.head = ["green"];
+console.log(table.options.style.head);
 
 var connection = mysql.createConnection({
 	host: "localhost", 
@@ -52,6 +55,27 @@ function managerPrompt(){
 	});
 }
 
+function continuePrompt(){
+	inquirer.prompt([
+		{
+			type: "list",
+			name: "choice",
+			choices: ["Yes", "No"],
+			message: "Would you like to continue?"
+		}
+	]).then(function(answer){
+		switch(answer.choice){
+			case "Yes":
+			managerPrompt();
+			break;
+
+			case "No":
+			console.log("Bye Felicia");
+			break;
+		}
+	});
+}
+
 function viewAll(){
 	connection.query("SELECT * FROM products", function(err, res) {
 		for (var i = 0; i < res.length; i++) {
@@ -60,35 +84,22 @@ function viewAll(){
 			);
 		}
 		console.log(table.toString());
-		managerPrompt();
+		continuePrompt();
 	});
 }
 
 function viewLow(){
-	connection.query("SELECT * FROM products WHERE stock_quantity=?", [48, 50], function(err, res) {
-
-		for (var i = 0; i < res.length; i++) {
-			console.log(res[i].item_id);
-			table.push(
-	    	[res[i].item_id, res[i].product_name, res[i].department_name, res[i].price, res[i].stock_quantity]
-			);
+	connection.query("SELECT * FROM products WHERE stock_quantity > 48", function(err, res) {
+		if (res.length > 0) {
+			for (var i = 0; i < res.length; i++) {
+				table.push([res[i].item_id, res[i].product_name, res[i].department_name, res[i].price, res[i].stock_quantity]);
+			}
+			console.log(colors.green(table.toString()));
+			
+		} else {
+			console.log("Bye Felicia")
 		}
-
-		// 	var itemID = res[i].item_id;
-		// 	var productName = res[i].product_name;
-		// 	var dptName = res[i].department_name;
-		// 	var price = res[i].price;
-		// 	var qty = res[i].stock_quantity;
-		// 	if (res[i].stock_quantity > 10) {
-		// 		table.push(
-	 //    		[itemID, productName, dptName, price, qty]
-		// 		);
-		// 	console.log(table.toString());
-		// 	} else {
-		// 	console.log("No low inventory to show.");
-		// 	}	
-		// }
-		//managerPrompt();
+		continuePrompt();
 	});
 }
 
@@ -148,10 +159,6 @@ function addInventory(){
 function addNewProduct(){
 	console.log("add new product");
 }
-
-
-
-//need to add recursion and figure out what's going on with my viewLow function
 
 
 
