@@ -78,19 +78,34 @@ function placeOrder(){
 			 		],
 			 		function(err, res) {
 			 			console.log("Thank you for your purchase! Your total comes to: $" + total);
+			 			continuePrompt();
 			 		}
 			 		);
 			 } else {
 			 	console.log("So sorry! We only have " + chosenItemQty + " remaining of that item.");
+			 	continuePrompt();
 			 }
 		});
 	});
 }
 
+function continuePrompt(){
+	inquirer.prompt([
+		{
+			type: "list",
+			name: "choice",
+			choices: ["Yes", "No"],
+			message: "Would you like to place an another order?"
+		}
+	]).then(function(answer){
+		switch(answer.choice){
+			case "Yes":
+			placeOrder();
+			break;
 
-// questions: I would like to refactor my code so that I'm using a loop in the "choices" for my inquirer. I would also like to include some recursion so that the user gets pushed back to the questions once they make it through the if/else statement so that they won't have to hit ctrl c and rerun the app. Also need to figure out colors.
-
-
-
-
-
+			case "No":
+			console.log("Bye Felicia");
+			break;
+		}
+	});
+}
