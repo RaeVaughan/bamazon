@@ -214,20 +214,5 @@ function addNewProduct(){
 
 
 
-
-
 //add decimal options
 //add "would you like to add more" prompt to the low inventory function
-
-
-
-
-
-
-
-
-
-
-
-
-

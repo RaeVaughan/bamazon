@@ -15,24 +15,26 @@ var table = new Table({
 	head: ["ID", "Product Name", "Department", "Price"],
 	colWidths: [5, 25, 25, 8]
 });
+table.options.style.head = ["green"];
 
 connection.connect(function(err){
 	if (err) throw err;
 	console.log("connected as id " + connection.threadId);
+	showTable();
 	placeOrder();
 });
 
-function placeOrder(){
+function showTable(){
 	connection.query("SELECT * FROM products", function (err, res) {
 		for (var i = 0; i < res.length; i++) {
-			table.push(
-	    	[res[i].item_id, res[i].product_name, res[i].department_name, res[i].price]
-			);
-			//choiceArray.push(res[i].item_id);
-		}
-		console.log(table.toString());
-		//console.log(choiceArray);
+				table.push([res[i].item_id, res[i].product_name, res[i].department_name, res[i].price]);
+			}
+			console.log(table.toString());
+	});
+}
 
+function placeOrder(){
+	connection.query("SELECT * FROM products", function (err, res) {
 		inquirer.prompt([
 			{
 				type: "input",
