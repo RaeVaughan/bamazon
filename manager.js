@@ -2,7 +2,6 @@ var mysql = require("mysql");
 var Table = require("cli-table");
 var inquirer = require("inquirer");
 var colors = require("colors");
-var colors = require('colors/safe');
 
 var table = new Table({
 		head: ["ID", "Product Name", "Department", "Price", "Qty"],

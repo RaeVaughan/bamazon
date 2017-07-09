@@ -65,12 +65,14 @@ function placeOrder(){
 			 var chosenItemPrice = (res[chosenItemIndex].price);
 			 var total = (chosenItemPrice * answers.amount);
 
+
 			 if (chosenItemQty >= answers.amount){
 			 	console.log("In stock!");
 			 	connection.query("UPDATE products SET ? WHERE ?",
 			 		[
 			 			{
-			 				stock_quantity: chosenItemQty - answers.amount
+			 				stock_quantity: chosenItemQty - answers.amount,
+			 				product_sales: total
 			 			},
 			 			{
 			 				item_id: chosenItemId
