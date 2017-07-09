@@ -235,4 +235,4 @@ function addNewProduct(){
 
 
 //add decimal options
-//add "would you like to add more" prompt to the low inventory function
+//when I add a new product, the auto-increment doesn't work right and screws up my place order function
