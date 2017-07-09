@@ -75,6 +75,27 @@ function continuePrompt(){
 	});
 }
 
+function addMorePrompt(){
+	inquirer.prompt([
+		{
+			type: "list",
+			name: "choice",
+			choices: ["Yes", "No"],
+			message: "Would you like to add more?"
+		}
+	]).then(function(answer){
+		switch(answer.choice){
+			case "Yes":
+			addInventory();
+			break;
+
+			case "No":
+			console.log("Bye Felicia");
+			break;
+		}
+	});
+}
+
 function viewAll(){
 	connection.query("SELECT * FROM products", function(err, res) {
 		for (var i = 0; i < res.length; i++) {
@@ -98,7 +119,7 @@ function viewLow(){
 		} else {
 			console.log("No low inventory items to show.")
 		}
-		continuePrompt();
+		addMorePrompt();
 	});
 }
 
