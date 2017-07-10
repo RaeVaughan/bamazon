@@ -129,10 +129,10 @@ function viewLow(){
 		if (res.length > 0) {
 			//loop through the results and push to the table, and run the addMorePrompt function to ask if the manager would like to restock
 			for (var i = 0; i < res.length; i++) {
-				table.push([res[i].item_id, res[i].product_name, res[i].department_name, res[i].price, res[i].stock_quantity]);
-				addMorePrompt();
+				table.push([res[i].item_id, res[i].product_name, res[i].department_name, res[i].price, res[i].stock_quantity]);	
 			}
 			console.log(table.toString());
+			addMorePrompt();
 			//or log that there are no low inventory items to show and run the continuePrompt function to ask if they want to continue
 		} else {
 			console.log("No low inventory items to show.");
