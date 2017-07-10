@@ -11,7 +11,7 @@ If there is enough stock for the purchase to be made, the user is thanked for th
 
 Once a purchase is made, the MySQL database is updated, and the user is asked if they would like to make another purchase. If so, they are taken back through the same id and quantity questions. If not, they are told goodbye.
 
-!(demo)[/images/customer-view.gif]
+!(demo)[./images/customer-view.gif]
 
 ## 2. Manager
 
